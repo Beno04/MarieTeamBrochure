@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using MarieTeamBrochure.Models;
@@ -23,7 +24,7 @@ namespace MarieTeamBrochure.Services
                 PdfWriter.GetInstance(document, new FileStream(filePath, FileMode.Create));
                 document.Open();
 
-                // Ajouter le contenu au PDF
+                // Ajouter le titre au PDF
                 document.Add(new Paragraph("Brochure des Bateaux Voyageurs"));
                 document.Add(new Paragraph("\n"));
 
@@ -32,13 +33,28 @@ namespace MarieTeamBrochure.Services
                     document.Add(new Paragraph($"Nom: {bateau.Nom}"));
                     document.Add(new Paragraph($"Longueur: {bateau.Longueur} mètres"));
                     document.Add(new Paragraph($"Largeur: {bateau.Largeur} mètres"));
-                    document.Add(new Paragraph($"Vitesse: {bateau.Vitesse} noeuds"));
+                    document.Add(new Paragraph($"Vitesse: {bateau.Vitesse} "));
                     document.Add(new Paragraph("Équipements: "));
 
                     foreach (var equip in bateau.Equipements)
                     {
                         document.Add(new Paragraph($"- {equip}"));
                     }
+
+                    // Ajouter l'image associée au bateau depuis une URL
+                    try
+                    {
+                        // Télécharger l'image depuis l'URL
+                        string tempImagePath = DownloadImage(bateau.image_url);
+                        Image img = Image.GetInstance(tempImagePath); // Charger l'image téléchargée
+                        img.ScaleToFit(100f, 100f); // Optionnel: redimensionner l'image si nécessaire
+                        document.Add(img); // Ajouter l'image au PDF
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Erreur lors de l'ajout de l'image : {ex.Message}");
+                    }
+
                     document.Add(new Paragraph("---------------------------"));
                 }
             }
@@ -50,6 +66,25 @@ namespace MarieTeamBrochure.Services
 
             // Ouvrir le fichier PDF généré automatiquement
             OpenPDF(filePath);
+        }
+
+        // Méthode pour télécharger l'image depuis une URL
+        private static string DownloadImage(string imageUrl)
+        {
+            string tempFilePath = Path.Combine(Directory.GetCurrentDirectory(), "temp_image.jpg");
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    client.DownloadFile(imageUrl, tempFilePath); // Télécharger l'image
+                }
+                return tempFilePath;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erreur lors du téléchargement de l'image: {ex.Message}");
+                return null;
+            }
         }
 
         // Méthode pour ouvrir le fichier PDF avec le lecteur par défaut
