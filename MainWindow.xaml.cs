@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using MarieTeamBrochure.Models;
 using MarieTeamBrochure.Services;
@@ -9,33 +10,37 @@ namespace MarieTeamBrochure
     {
         private DatabaseService dbService = new DatabaseService();
         private List<BateauVoyageur> bateaux;
+        private string userType; // Variable pour stocker le type d'utilisateur
 
-        public MainWindow()
+        public MainWindow(string userType)
         {
             InitializeComponent();
-            ChargerBateaux(); // Charger les bateaux au démarrage
+            this.userType = userType; // On récupère le type d'utilisateur passé lors de l'ouverture de la fenêtre
+
+            // Si l'utilisateur est un "Client", ouvrir MainWindowClient.xaml, sinon MainWindow.xaml
+            OuvrirFenetreAppropriee();
         }
 
-
-        private void ChargerBateaux()
+        private void OuvrirFenetreAppropriee()
         {
-            bateaux = dbService.GetBateauxVoyageurs();
-            BateauListBox.ItemsSource = bateaux;
-            BateauListBox.DisplayMemberPath = "Nom";
-        }
-
-        private void BateauListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (BateauListBox.SelectedItem is BateauVoyageur bateau)
+            if (userType == "Gestionnaire")
             {
-                EquipementsListBox.ItemsSource = bateau.Equipements;
-            }
-        }
+                WindowAdmin adminWindows = new WindowAdmin();
+                adminWindows.Show();
+                this.Close(); // Ferme la fenêtre actuelle (MainWindow)
 
-        private void GenererPDF_Click(object sender, RoutedEventArgs e)
-        {
-            PDFGenerator.GenerateBrochure(bateaux);
-            MessageBox.Show("PDF généré avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if (userType == "Client")
+            {
+                // Si l'utilisateur est un client, on ouvre la fenêtre dédiée pour les clients
+                WindowClient clientWindow = new WindowClient();
+                clientWindow.Show();
+                this.Close(); // Ferme la fenêtre actuelle (MainWindow)
+            }
+            else
+            {
+                MessageBox.Show("Type d'utilisateur non reconnu.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

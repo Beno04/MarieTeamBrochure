@@ -1,0 +1,36 @@
+﻿<Window x:Class="MarieTeamBrochure.WindowAdmin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MarieTeam - Brochure PDF" Height="450" Width="800">
+    <Grid>
+        <!-- Liste des Bateaux -->
+        <Label Content="Liste des Bateaux" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <ListBox x:Name="BateauListBox" HorizontalAlignment="Left" Height="250" Margin="10,40,0,0" VerticalAlignment="Top" Width="350" 
+                 SelectionChanged="BateauListBox_SelectionChanged"/>
+
+        <!-- Détails du bateau sélectionné -->
+        <Label Content="Nom du bateau :" HorizontalAlignment="Left" Margin="380,10,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtNom" HorizontalAlignment="Left" Margin="460,10,10,0" VerticalAlignment="Top" Width="300"/>
+
+        <Label Content="Longueur :" HorizontalAlignment="Left" Margin="380,40,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtLongueur" HorizontalAlignment="Left" Margin="460,40,10,0" VerticalAlignment="Top" Width="300"/>
+
+        <Label Content="Largeur :" HorizontalAlignment="Left" Margin="380,70,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtLargeur" HorizontalAlignment="Left" Margin="460,70,10,0" VerticalAlignment="Top" Width="300"/>
+
+        <Label Content="Vitesse :" HorizontalAlignment="Left" Margin="380,100,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtVitesse" HorizontalAlignment="Left" Margin="460,100,10,0" VerticalAlignment="Top" Width="300"/>
+
+        <Label Content="Image URL :" HorizontalAlignment="Left" Margin="380,130,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtImage" HorizontalAlignment="Left" Margin="460,130,10,0" VerticalAlignment="Top" Width="300"/>
+
+        <!-- Liste des équipements du bateau sélectionné -->
+        <Label Content="Équipements du bateau" HorizontalAlignment="Left" Margin="380,160,0,0" VerticalAlignment="Top"/>
+        <ListBox x:Name="EquipementsListBox" HorizontalAlignment="Left" Height="150" Margin="380,190,0,0" VerticalAlignment="Top" Width="350"/>
+
+        <!-- Boutons -->
+        <Button x:Name="BtnAjouter" Content="Ajouter" HorizontalAlignment="Left" Margin="10,320,0,0" VerticalAlignment="Top" Width="150" Height="30" Click="BtnAjouter_Click"/>
+        <Button x:Name="BtnModifier" Content="Modifier" HorizontalAlignment="Left" Margin="170,320,0,0" VerticalAlignment="Top" Width="150" Height="30" Click="BtnModifier_Click"/>
+        <Button x:Name="BtnGenererPDF" Content="Générer PDF" HorizontalAlignment="Left" Margin="330,320,0,0" VerticalAlignment="Top" Width="150" Height="30" Click="GenererPDF_Click"/>
+    </Grid>
+</Window>

@@ -1,0 +1,15 @@
+﻿<Window x:Class="MarieTeamBrochure.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Connexion" Height="250" Width="400">
+
+    <Grid>
+        <Label Content="Adresse mail" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+        <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Margin="150,10,10,0" VerticalAlignment="Top" Width="200"/>
+
+        <Label Content="Mot de passe" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,50,0,0"/>
+        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="150,50,10,0" VerticalAlignment="Top" Width="200"/>
+
+        <Button Content="Se connecter" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,100,0,0" Width="100" Click="LoginButton_Click"/>
+    </Grid>
+</Window>

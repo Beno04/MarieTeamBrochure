@@ -30,6 +30,21 @@ namespace MarieTeamBrochure.Services
 
                 foreach (var bateau in bateaux)
                 {
+
+                    // Ajouter l'image associée au bateau depuis une URL
+                    try
+                    {
+                        // Télécharger l'image depuis l'URL
+                        string tempImagePath = DownloadImage(bateau.image_url);
+                        Image img = Image.GetInstance(tempImagePath); // Charger l'image téléchargée
+                        img.ScaleToFit(300f, 300f); // Optionnel: redimensionner l'image si nécessaire
+                        document.Add(img); // Ajouter l'image au PDF
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Erreur lors de l'ajout de l'image : {ex.Message}");
+                    }
+
                     document.Add(new Paragraph($"Nom: {bateau.Nom}"));
                     document.Add(new Paragraph($"Longueur: {bateau.Longueur} mètres"));
                     document.Add(new Paragraph($"Largeur: {bateau.Largeur} mètres"));
@@ -41,19 +56,7 @@ namespace MarieTeamBrochure.Services
                         document.Add(new Paragraph($"- {equip}"));
                     }
 
-                    // Ajouter l'image associée au bateau depuis une URL
-                    try
-                    {
-                        // Télécharger l'image depuis l'URL
-                        string tempImagePath = DownloadImage(bateau.image_url);
-                        Image img = Image.GetInstance(tempImagePath); // Charger l'image téléchargée
-                        img.ScaleToFit(100f, 100f); // Optionnel: redimensionner l'image si nécessaire
-                        document.Add(img); // Ajouter l'image au PDF
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Erreur lors de l'ajout de l'image : {ex.Message}");
-                    }
+                    
 
                     document.Add(new Paragraph("---------------------------"));
                 }

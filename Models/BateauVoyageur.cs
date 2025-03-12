@@ -11,7 +11,7 @@
         {
             Vitesse = vitesse_bateau;
             Equipements = equipements;
-            image_url = image_url;  // Stocker le chemin de l'image
+            this.image_url = image_url;  // Stocker le chemin de l'image
         }
     }
 }

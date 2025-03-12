@@ -63,5 +63,61 @@ namespace MarieTeamBrochure.Services
             }
             return equipements;
         }
+
+        // Méthode pour ajouter un bateau
+        public bool AddBateauVoyageur(BateauVoyageur bateau)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string query = "INSERT INTO bateau (id_bateau, nom_bateau, long_bateau, larg_bateau, vitesse_bateau, image_url) VALUES (@Id, @Nom, @Longueur, @Largeur, @Vitesse, @ImageUrl)";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Id", bateau.Id);
+                cmd.Parameters.AddWithValue("@Nom", bateau.Nom);
+                cmd.Parameters.AddWithValue("@Longueur", bateau.Longueur);
+                cmd.Parameters.AddWithValue("@Largeur", bateau.Largeur);
+                cmd.Parameters.AddWithValue("@Vitesse", bateau.Vitesse);
+                cmd.Parameters.AddWithValue("@ImageUrl", bateau.image_url);
+
+                try
+                {
+                    conn.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erreur lors de l'ajout du bateau: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        // Méthode pour modifier un bateau
+        public bool UpdateBateauVoyageur(BateauVoyageur bateau)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string query = "UPDATE bateau SET nom_bateau = @Nom, long_bateau = @Longueur, larg_bateau = @Largeur, vitesse_bateau = @Vitesse, image_url = @ImageUrl WHERE id_bateau = @Id";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Id", bateau.Id);
+                cmd.Parameters.AddWithValue("@Nom", bateau.Nom);
+                cmd.Parameters.AddWithValue("@Longueur", bateau.Longueur);
+                cmd.Parameters.AddWithValue("@Largeur", bateau.Largeur);
+                cmd.Parameters.AddWithValue("@Vitesse", bateau.Vitesse);
+                cmd.Parameters.AddWithValue("@ImageUrl", bateau.image_url);
+
+                try
+                {
+                    conn.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erreur lors de la modification du bateau: " + ex.Message);
+                    return false;
+                }
+            }
+        }
     }
 }
