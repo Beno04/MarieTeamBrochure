@@ -30,21 +30,31 @@ namespace MarieTeamBrochure.Services
 
                 foreach (var bateau in bateaux)
                 {
-
                     // Ajouter l'image associée au bateau depuis une URL
                     try
                     {
                         // Télécharger l'image depuis l'URL
                         string tempImagePath = DownloadImage(bateau.image_url);
-                        Image img = Image.GetInstance(tempImagePath); // Charger l'image téléchargée
-                        img.ScaleToFit(300f, 300f); // Optionnel: redimensionner l'image si nécessaire
-                        document.Add(img); // Ajouter l'image au PDF
+                        if (!string.IsNullOrEmpty(tempImagePath))
+                        {
+                            Image img = Image.GetInstance(tempImagePath); // Charger l'image téléchargée
+                            img.ScaleToFit(400f, 400f); // Optionnel: redimensionner l'image si nécessaire
+                            document.Add(img); // Ajouter l'image au PDF
+
+                            // Supprimer l'image après ajout pour éviter l'accumulation de fichiers temporaires
+                            File.Delete(tempImagePath);
+                        }
+                        else
+                        {
+                            document.Add(new Paragraph("Image non disponible"));
+                        }
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Erreur lors de l'ajout de l'image : {ex.Message}");
                     }
 
+                    // Ajouter les informations du bateau
                     document.Add(new Paragraph($"Nom: {bateau.Nom}"));
                     document.Add(new Paragraph($"Longueur: {bateau.Longueur} mètres"));
                     document.Add(new Paragraph($"Largeur: {bateau.Largeur} mètres"));
@@ -55,8 +65,6 @@ namespace MarieTeamBrochure.Services
                     {
                         document.Add(new Paragraph($"- {equip}"));
                     }
-
-                    
 
                     document.Add(new Paragraph("---------------------------"));
                 }
@@ -74,14 +82,21 @@ namespace MarieTeamBrochure.Services
         // Méthode pour télécharger l'image depuis une URL
         private static string DownloadImage(string imageUrl)
         {
-            string tempFilePath = Path.Combine(Directory.GetCurrentDirectory(), "temp_image.jpg");
+            // Vérifier si l'URL est valide
+            if (string.IsNullOrEmpty(imageUrl))
+                return null;
+
+            // Générer un nom de fichier unique basé sur l'URL de l'image
+            string uniqueFileName = Guid.NewGuid().ToString() + ".jpg"; // ou ".png" selon le format d'image
+            string tempFilePath = Path.Combine(Directory.GetCurrentDirectory(), uniqueFileName);
+
             try
             {
                 using (var client = new WebClient())
                 {
                     client.DownloadFile(imageUrl, tempFilePath); // Télécharger l'image
                 }
-                return tempFilePath;
+                return tempFilePath; // Retourner le chemin du fichier temporaire
             }
             catch (Exception ex)
             {
