@@ -7,7 +7,7 @@ namespace MarieTeamBrochure
 {
     public partial class LoginWindow : Window
     {
-        private string connectionString = "Server=localhost;Port=3306;Database=marieteam;Uid=root;Pwd=;";
+        private string connectionString = "Server=localhost;Port=3306;Database=marieteam;Uid=marieteam;Pwd=marieteam;";
 
         public LoginWindow()
         {
