@@ -23,6 +23,8 @@ namespace MarieTeamBrochure.Services
                 // Définition des polices
                 Font titleFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
                 Font boldFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+                Font boldUnderlineFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD | Font.UNDERLINE);
+
 
                 // Ajouter le titre centré en gras et grand
                 Paragraph title = new Paragraph("Brochure des Bateaux Voyageurs", titleFont);
@@ -38,7 +40,7 @@ namespace MarieTeamBrochure.Services
                         if (!string.IsNullOrEmpty(tempImagePath))
                         {
                             Image img = Image.GetInstance(tempImagePath);
-                            img.ScaleToFit(400f, 400f);
+                            img.ScaleToFit(350f, 350f);
                             document.Add(img);
                             File.Delete(tempImagePath);
                         }
@@ -54,13 +56,16 @@ namespace MarieTeamBrochure.Services
 
                     // Nom du bateau en gras avec espaces avant et après
                     document.Add(new Paragraph("\n"));
-                    document.Add(new Paragraph($"Nom: {bateau.Nom}", boldFont));
+                    document.Add(new Paragraph($"Nom: {bateau.Nom}", boldUnderlineFont));
                     document.Add(new Paragraph("\n"));
 
                     document.Add(new Paragraph($"Longueur: {bateau.Longueur} mètres"));
                     document.Add(new Paragraph($"Largeur: {bateau.Largeur} mètres"));
                     document.Add(new Paragraph($"Vitesse: {bateau.Vitesse} noeuds"));
-                    document.Add(new Paragraph("Équipements: "));
+                    document.Add(new Paragraph("\n"));
+                    document.Add(new Paragraph("Équipements:", boldUnderlineFont));
+                    document.Add(new Paragraph("\n"));
+
 
                     foreach (var equip in bateau.Equipements)
                     {
@@ -68,7 +73,6 @@ namespace MarieTeamBrochure.Services
                     }
 
                     // Ligne de séparation avec espaces avant et après
-                    document.Add(new Paragraph("\n"));
                     document.Add(new Paragraph("---------------------------"));
                     document.Add(new Paragraph("\n"));
                 }
