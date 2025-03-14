@@ -29,13 +29,8 @@
             </Setter>
         </Style>
 
-        <LinearGradientBrush x:Key="ButtonGradientBrush" StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#4A90E2" Offset="0.0"/>
-            <GradientStop Color="#63B8FF" Offset="1.0"/>
-        </LinearGradientBrush>
-
         <Style x:Key="MainButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource ButtonGradientBrush}"/>
+            <Setter Property="Background" Value="#4A90E2"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -48,35 +43,6 @@
                                 Padding="10,5">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="RoundedListBoxItem" TargetType="ListBoxItem">
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ListBoxItem">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="5"
-                                Margin="2">
-                            <ContentPresenter/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#4A90E2"/>
-                                <Setter Property="Foreground" Value="White"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#E0E0E0"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -121,17 +87,7 @@
                     <ListBox x:Name="BateauListBox" 
                              Height="646"
                              SelectionChanged="BateauListBox_SelectionChanged"
-                             ScrollViewer.VerticalScrollBarVisibility="Auto"
-                             ItemContainerStyle="{StaticResource RoundedListBoxItem}" RenderTransformOrigin="0.5,0.5">
-                        <ListBox.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform AngleX="0.107"/>
-                                <RotateTransform/>
-                                <TranslateTransform X="0.623"/>
-                            </TransformGroup>
-                        </ListBox.RenderTransform>
-                    </ListBox>
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"/>
                 </StackPanel>
             </Border>
 
@@ -155,61 +111,37 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Champs de saisie -->
-                    <Label Content="Nom du bateau :" Grid.Row="0" Grid.Column="0"
-                           Margin="0,0,10,10" VerticalAlignment="Center"/>
-                    <TextBox x:Name="txtNom" Grid.Row="0" Grid.Column="1"
-                             Style="{StaticResource RoundedTextBox}" 
-                             Margin="0,0,0,10"/>
+                    <Label Content="Nom du bateau :" Grid.Row="0" Grid.Column="0"/>
+                    <TextBox x:Name="txtNom" Grid.Row="0" Grid.Column="1" Style="{StaticResource RoundedTextBox}"/>
 
-                    <Label Content="Longueur :" Grid.Row="1" Grid.Column="0"
-                           Margin="0,0,10,10" VerticalAlignment="Center"/>
-                    <TextBox x:Name="txtLongueur" Grid.Row="1" Grid.Column="1"
-                             Style="{StaticResource RoundedTextBox}" 
-                             Margin="0,0,0,10"/>
+                    <Label Content="Longueur :" Grid.Row="1" Grid.Column="0"/>
+                    <TextBox x:Name="txtLongueur" Grid.Row="1" Grid.Column="1" Style="{StaticResource RoundedTextBox}"/>
 
-                    <Label Content="Largeur :" Grid.Row="2" Grid.Column="0"
-                           Margin="0,0,10,10" VerticalAlignment="Center"/>
-                    <TextBox x:Name="txtLargeur" Grid.Row="2" Grid.Column="1"
-                             Style="{StaticResource RoundedTextBox}" 
-                             Margin="0,0,0,10"/>
+                    <Label Content="Largeur :" Grid.Row="2" Grid.Column="0"/>
+                    <TextBox x:Name="txtLargeur" Grid.Row="2" Grid.Column="1" Style="{StaticResource RoundedTextBox}"/>
 
-                    <Label Content="Vitesse :" Grid.Row="3" Grid.Column="0"
-                           Margin="0,0,10,10" VerticalAlignment="Center"/>
-                    <TextBox x:Name="txtVitesse" Grid.Row="3" Grid.Column="1"
-                             Style="{StaticResource RoundedTextBox}" 
-                             Margin="0,0,0,10"/>
+                    <Label Content="Vitesse :" Grid.Row="3" Grid.Column="0"/>
+                    <TextBox x:Name="txtVitesse" Grid.Row="3" Grid.Column="1" Style="{StaticResource RoundedTextBox}"/>
 
-                    <Label Content="Image URL :" Grid.Row="4" Grid.Column="0"
-                           Margin="0,0,10,10" VerticalAlignment="Center"/>
-                    <TextBox x:Name="txtImage" Grid.Row="4" Grid.Column="1"
-                             Style="{StaticResource RoundedTextBox}" 
-                             Margin="0,0,0,10"/>
+                    <Label Content="Image URL :" Grid.Row="4" Grid.Column="0"/>
+                    <TextBox x:Name="txtImage" Grid.Row="4" Grid.Column="1" Style="{StaticResource RoundedTextBox}"/>
 
-                    <!-- Liste des équipements -->
-                    <Label Content="Équipements :" Grid.Row="5" Grid.Column="0"
-                           Margin="0,10,10,0" VerticalAlignment="Top"/>
-                    <ListBox x:Name="EquipementsListBox" Grid.Row="5"
-                             Margin="109,10,0,10"
-                             ScrollViewer.VerticalScrollBarVisibility="Auto"
-                             ItemContainerStyle="{StaticResource RoundedListBoxItem}" Grid.ColumnSpan="2"/>
+                    <Label Content="Équipements :" Grid.Row="5" Grid.Column="0"/>
+                    <StackPanel Grid.Row="5" Grid.Column="1">
+                        <ListBox x:Name="EquipementsListBox" Height="237"/>
+                        <ComboBox x:Name="EquipementComboBox" Margin="0,10,0,10"/>
+                        <Button Content="Ajouter équipement" Style="{StaticResource MainButtonStyle}" Click="BtnAjouterEquipement_Click"/>
+                        <Button Content="Supprimer équipement" Style="{StaticResource MainButtonStyle}" Click="BtnSupprimerEquipement_Click" Margin="0,10,0,0"/>
+                    </StackPanel>
                 </Grid>
             </Border>
         </Grid>
 
         <!-- Boutons -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button x:Name="BtnAjouter" Content="Ajouter" 
-                    Style="{StaticResource MainButtonStyle}" 
-                    Width="120" Click="BtnAjouter_Click"/>
-
-            <Button x:Name="BtnModifier" Content="Modifier" 
-                    Style="{StaticResource MainButtonStyle}" 
-                    Width="120" Margin="10,0,0,0" Click="BtnModifier_Click"/>
-
-            <Button x:Name="BtnGenererPDF" Content="Générer PDF" 
-                    Style="{StaticResource MainButtonStyle}" 
-                    Width="150" Margin="10,0,0,0" Click="GenererPDF_Click"/>
+            <Button x:Name="BtnAjouter" Content="Ajouter" Style="{StaticResource MainButtonStyle}" Width="120" Click="BtnAjouter_Click"/>
+            <Button x:Name="BtnModifier" Content="Modifier" Style="{StaticResource MainButtonStyle}" Width="120" Margin="10,0,0,0" Click="BtnModifier_Click"/>
+            <Button x:Name="BtnGenererPDF" Content="Générer PDF" Style="{StaticResource MainButtonStyle}" Width="150" Margin="10,0,0,0" Click="GenererPDF_Click"/>
         </StackPanel>
     </Grid>
 </Window>

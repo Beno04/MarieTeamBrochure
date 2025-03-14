@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using MarieTeamBrochure.Models;
 using MarieTeamBrochure.Services;
@@ -10,12 +11,13 @@ namespace MarieTeamBrochure
     {
         private DatabaseService dbService = new DatabaseService();
         private List<BateauVoyageur> bateaux;
-        private string userType; // Variable pour stocker le type d'utilisateur
+        private List<string> equipementsDisponibles;
 
         public WindowAdmin()
         {
             InitializeComponent();
-            ChargerBateaux(); // Charger les bateaux au démarrage
+            ChargerBateaux();
+            ChargerEquipements();
         }
 
         private void ChargerBateaux()
@@ -23,6 +25,12 @@ namespace MarieTeamBrochure
             bateaux = dbService.GetBateauxVoyageurs();
             BateauListBox.ItemsSource = bateaux;
             BateauListBox.DisplayMemberPath = "Nom";
+        }
+
+        private void ChargerEquipements()
+        {
+            equipementsDisponibles = dbService.GetAllEquipements();
+            EquipementComboBox.ItemsSource = equipementsDisponibles;
         }
 
         private void BateauListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -34,8 +42,57 @@ namespace MarieTeamBrochure
                 txtLargeur.Text = bateau.Largeur.ToString();
                 txtVitesse.Text = bateau.Vitesse;
                 txtImage.Text = bateau.image_url;
-
                 EquipementsListBox.ItemsSource = bateau.Equipements;
+                MettreAJourEquipementsDisponibles(bateau);
+            }
+        }
+
+        private void BtnAjouterEquipement_Click(object sender, RoutedEventArgs e)
+        {
+            if (BateauListBox.SelectedItem is BateauVoyageur bateau && EquipementComboBox.SelectedItem is string equipement)
+            {
+                if (dbService.AddEquipementToBateau(bateau.Id, equipement))
+                {
+                    bateau.Equipements.Add(equipement);
+                    EquipementsListBox.Items.Refresh();
+                    MettreAJourEquipementsDisponibles(bateau);
+                    MessageBox.Show("Équipement ajouté avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Erreur lors de l'ajout de l'équipement.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void BtnSupprimerEquipement_Click(object sender, RoutedEventArgs e)
+        {
+            if (BateauListBox.SelectedItem is BateauVoyageur bateau && EquipementsListBox.SelectedItem is string equipement)
+            {
+                if (dbService.RemoveEquipementFromBateau(bateau.Id, equipement))
+                {
+                    bateau.Equipements.Remove(equipement);
+                    EquipementsListBox.Items.Refresh();
+                    MettreAJourEquipementsDisponibles(bateau);
+                    MessageBox.Show("Équipement supprimé avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Erreur lors de la suppression de l'équipement.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void MettreAJourEquipementsDisponibles(BateauVoyageur bateau)
+        {
+            if (bateau != null)
+            {
+                var equipementsDisponibles = dbService.GetAllEquipements().Except(bateau.Equipements).ToList();
+                EquipementComboBox.ItemsSource = equipementsDisponibles;
+            }
+            else
+            {
+                EquipementComboBox.ItemsSource = dbService.GetAllEquipements();
             }
         }
 
